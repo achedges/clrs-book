@@ -119,6 +119,54 @@ class BinarySearchTree:
 
 		return new
 
+	def delete(self, node: BinaryTreeNode):
+		if node.left is None and node.right is None and node.parent is None:
+			del node
+
+		elif node.left is None and node.right is None:
+			if node.value < node.parent.value:
+				node.parent.left = None
+			else:
+				node.parent.right = None
+
+			del node
+		elif node.left is None or node.right is None:
+			self.__del_one_subtree(node)
+
+		else:
+			self.__del_two_subtrees(node)
+
+		return
+
+	def __del_one_subtree(self, node: BinaryTreeNode):
+		if node.right is None:
+			if node.parent is None:
+				self.root = node.left
+			else:
+				node.left.parent = node.parent
+				if node.value < node.parent.value:
+					node.parent.left = node.left
+				else:
+					node.parent.right = node.left
+
+		else:
+			if node.parent is None:
+				self.root = node.right
+			else:
+				node.right.parent = node.parent
+				if node.value < node.parent.value:
+					node.parent.left = node.right
+				else:
+					node.parent.right = node.right
+			del node
+			return
+
+	def __del_two_subtrees(self, node: BinaryTreeNode):
+		successor = self.successor(node)
+		node.value = successor.value
+		self.delete(successor)
+		return
+
 
 
 if __name__ == '__main__':
@@ -132,6 +180,10 @@ if __name__ == '__main__':
 	bst.insert(13)
 	bst.insert(17)
 	bst.insert(19)
+	bst.insert(1)
+
+	delnode = bst.search(12)
+	bst.delete(delnode)
 
 	print('In-Order walk')
 	print(bst.toList(mode='inorder'))
