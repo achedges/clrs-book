@@ -15,42 +15,45 @@ class BinarySearchTree:
 	def __init__(self):
 		self.root: BinaryTreeNode = None
 
-	def walk(self, mode:str='inorder') -> BinaryTreeNode:
+	def toList(self, mode:str='inorder') -> [int]:
 		if mode not in [ 'inorder', 'preorder', 'postorder' ]:
 			raise Exception('{0} is an invalid binary tree walk mode'.format(mode))
 
+		valuelist = []
 		if self.root is None:
-			return BinaryTreeNode()
+			return valuelist
 
 		if mode == 'inorder':
-			BinarySearchTree.__walk_inorder(self.root)
+			BinarySearchTree.__toList_inorder(self.root, valuelist)
 		elif mode == 'preorder':
-			BinarySearchTree.__walk_preorder(self.root)
+			BinarySearchTree.__toList_preorder(self.root, valuelist)
 		else:
-			BinarySearchTree.__walk_postorder(self.root)
+			BinarySearchTree.__toList_postorder(self.root, valuelist)
+
+		return valuelist
 
 	@staticmethod
-	def __walk_inorder(node):
+	def __toList_inorder(node: BinaryTreeNode, listptr: [int]):
 		if node is not None:
-			BinarySearchTree.__walk_inorder(node.left)
-			print(node.value)
-			BinarySearchTree.__walk_inorder(node.right)
+			BinarySearchTree.__toList_inorder(node.left, listptr)
+			listptr.append(node.value)
+			BinarySearchTree.__toList_inorder(node.right, listptr)
 		return
 
 	@staticmethod
-	def __walk_preorder(node):
+	def __toList_preorder(node: BinaryTreeNode, listptr: [int]):
 		if node is not None:
-			print(node.value)
-			BinarySearchTree.__walk_preorder(node.left)
-			BinarySearchTree.__walk_preorder(node.right)
+			listptr.append(node.value)
+			BinarySearchTree.__toList_preorder(node.left, listptr)
+			BinarySearchTree.__toList_preorder(node.right, listptr)
 		return
 
 	@staticmethod
-	def __walk_postorder(node):
+	def __toList_postorder(node: BinaryTreeNode, listptr: [int]):
 		if node is not None:
-			BinarySearchTree.__walk_postorder(node.left)
-			BinarySearchTree.__walk_postorder(node.right)
-			print(node.value)
+			BinarySearchTree.__toList_postorder(node.left, listptr)
+			BinarySearchTree.__toList_postorder(node.right, listptr)
+			listptr.append(node.value)
 		return
 
 	def search(self, value: int) -> BinaryTreeNode:
@@ -131,10 +134,10 @@ if __name__ == '__main__':
 	bst.insert(19)
 
 	print('In-Order walk')
-	bst.walk(mode='inorder')
+	print(bst.toList(mode='inorder'))
 
 	print('\nPre-Order walk')
-	bst.walk(mode='preorder')
+	print(bst.toList(mode='preorder'))
 
 	print('\nPost-Order walk')
-	bst.walk(mode='postorder')
+	print(bst.toList(mode='postorder'))
