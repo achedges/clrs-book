@@ -9,6 +9,7 @@ class Test(unittest.TestCase):
 		cls.values =       [ 12, 5, 2, 9, 18, 15, 13, 17, 19 ]
 		cls.successors =   [ 13, 9, 5, 12, 19, 17, 15, 18, None ]
 		cls.predecessors = [ 9, 2, None, 5, 17, 13, 12, 15, 18 ]
+		cls.deleteTestValues = [ 5, 3, 2, 1, 4, 7, 6 ]
 		cls.searchTree = BinarySearchTree()
 		for v in cls.values:
 			cls.searchTree.insert(v)
@@ -65,4 +66,31 @@ class Test(unittest.TestCase):
 				self.assertIsNone(self.predecessors[i])
 			else:
 				self.assertEqual(predecessor.value, self.predecessors[i], msg='Incorrect predecessor for node {0}: {1}'.format(node.value, predecessor.value))
+		return
+
+	def testDeleteLeaf(self):
+		tree = BinarySearchTree()
+		for v in self.deleteTestValues:
+			tree.insert(v)
+		tree.delete(tree.search(4))
+		tree.delete(tree.search(6))
+		self.assertEqual(tree.toList(mode='inorder'), [ 1, 2, 3, 5, 7 ])
+		return
+
+	def testDeleteOneSubtree(self):
+		tree = BinarySearchTree()
+		for v in self.deleteTestValues:
+			tree.insert(v)
+		tree.delete(tree.search(2))
+		tree.delete(tree.search(7))
+		self.assertEqual(tree.toList(mode='inorder'), [ 1, 3, 4, 5, 6 ])
+		return
+
+	def testDeleteTwoSubtrees(self):
+		tree = BinarySearchTree()
+		for v in self.deleteTestValues:
+			tree.insert(v)
+		tree.delete(tree.search(3))
+		tree.delete(tree.search(5))
+		self.assertEqual(tree.toList(mode='inorder'), [ 1, 2, 4, 6, 7 ])
 		return

@@ -130,6 +130,7 @@ class BinarySearchTree:
 				node.parent.right = None
 
 			del node
+
 		elif node.left is None or node.right is None:
 			self.__del_one_subtree(node)
 
@@ -181,9 +182,6 @@ if __name__ == '__main__':
 	bst.insert(17)
 	bst.insert(19)
 	bst.insert(1)
-
-	delnode = bst.search(12)
-	bst.delete(delnode)
 
 	print('In-Order walk')
 	print(bst.toList(mode='inorder'))
