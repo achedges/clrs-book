@@ -159,8 +159,8 @@ class BinarySearchTree:
 					node.parent.left = node.right
 				else:
 					node.parent.right = node.right
-			del node
-			return
+		del node
+		return
 
 	def __del_two_subtrees(self, node: BinaryTreeNode):
 		successor = self.successor(node)
